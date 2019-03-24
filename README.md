@@ -1,4 +1,4 @@
-# img_kit
+# ImgKit
 
 Image Toolbox for Crystal (based on MagicWand binding)
 
