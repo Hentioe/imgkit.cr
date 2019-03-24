@@ -1,10 +1,10 @@
 module ImgKit
   lib LibMagickWand
-    MagickPathExtent = 4096
+    MAGICKPATHEXTENT = 4096
 
     struct MagickWand
       id : LibC::SizeT
-      name : LibC::Char[MagickPathExtent]
+      name : LibC::Char[MAGICKPATHEXTENT]
       signature : LibC::SizeT
     end
 
