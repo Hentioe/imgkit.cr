@@ -7,5 +7,7 @@ module ImgKit
     fun MagickWriteImages(MagickWand*, LibC::Char*, MagickBooleanType) : MagickBooleanType
     fun DestroyMagickWand(MagickWand*) : MagickWand*
     fun MagickWandTerminus
+    fun MagickGetImageWidth(MagickWand*) : LibC::SizeT
+    fun MagickGetImageHeight(MagickWand*) : LibC::SizeT
   end
 end

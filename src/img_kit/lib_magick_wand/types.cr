@@ -2,9 +2,15 @@ module ImgKit
   lib LibMagickWand
     MAGICKPATHEXTENT = 4096
 
+    struct Image
+      columns : LibC::SizeT # physical size of image
+      rows : LibC::SizeT
+    end
+
     struct MagickWand
       id : LibC::SizeT
       name : LibC::Char[MAGICKPATHEXTENT]
+      images : Image*
       signature : LibC::SizeT
     end
 

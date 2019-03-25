@@ -9,7 +9,7 @@ describe ImgKit do
 
   it "resize" do
     img = ImgKit::Image.new("demo.png")
-    img.resize(410, 250)
+    img.resize(301)
     img.save("output/resize.png")
     img.finish
   end
@@ -23,7 +23,7 @@ describe ImgKit do
 
   it "combin" do
     img = ImgKit::Image.new("demo.png")
-    img.resize(410, 250)
+    img.resize(width: 410)
     img.blur(5.0)
     img.save("output/resize_blur.png")
     img.finish

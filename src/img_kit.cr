@@ -10,19 +10,29 @@ module ImgKit
     getter
 
     getter destroy = false
+    getter width, height
 
     def initialize(@path)
       LibMagickWand.MagickWandGenesis
       @wand = LibMagickWand.NewMagickWand
       LibMagickWand.MagickReadImage(@wand, @path)
+      @width = LibMagickWand.MagickGetImageWidth(@wand)
+      @height = LibMagickWand.MagickGetImageHeight(@wand)
     end
 
-    def resize(width, height)
-      LibMagickWand.MagickResizeImage(@wand, width, height, LibMagickWand::FilterTypes::Lanczos2Filter)
+    def resize(width = 0, height = 0, filter = LibMagickWand::FilterTypes::Lanczos2Filter)
+      # width : height
+      ratio = @width.fdiv @height
+      if width == 0
+        width = (height * ratio).to_i
+      elsif height == 0
+        height = (width / ratio).to_i
+      end
+      LibMagickWand.MagickResizeImage(@wand, width, height, filter)
     end
 
-    def blur(sigma)
-      LibMagickWand.MagickGaussianBlurImage(@wand, 0, sigma)
+    def blur(sigma, radius = 0.0)
+      LibMagickWand.MagickGaussianBlurImage(@wand, radius, sigma)
     end
 
     def save(path)
