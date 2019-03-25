@@ -9,7 +9,7 @@ describe ImgKit do
 
   it "resize" do
     img = ImgKit::Image.new("demo.png")
-    img.resize(301)
+    img.resize(width: 301)
     img.save("output/resize.png")
     img.finish
   end
@@ -21,11 +21,19 @@ describe ImgKit do
     img.finish
   end
 
+  it "crop" do
+    img = ImgKit::Image.new("demo.png")
+    img.crop(width: 120, height: 200, x: 50, y: 50)
+    img.save("output/crop.png")
+    img.finish
+  end
+
   it "combin" do
     img = ImgKit::Image.new("demo.png")
     img.resize(width: 410)
     img.blur(5.0)
-    img.save("output/resize_blur.png")
+    img.crop(width: 200)
+    img.save("output/combin.png")
     img.finish
   end
 end

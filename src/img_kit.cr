@@ -35,6 +35,10 @@ module ImgKit
       LibMagickWand.MagickGaussianBlurImage(@wand, radius, sigma)
     end
 
+    def crop(width = 0, height = 0, x = 0, y = 0)
+      LibMagickWand.MagickCropImage(@wand, width, height, x, y)
+    end
+
     def save(path)
       LibMagickWand.MagickWriteImages(@wand, path, LibMagickWand::MagickBooleanType::MagickTrue)
     end
