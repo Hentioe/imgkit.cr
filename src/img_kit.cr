@@ -3,6 +3,12 @@ require "./img_kit/**"
 module ImgKit
   VERSION = "0.1.0-dev"
 
+  extend self
+
+  def terminus
+    LibMagickWand.MagickWandTerminus
+  end
+
   class Image
     property path : String
 
@@ -45,7 +51,6 @@ module ImgKit
 
     def finish
       LibMagickWand.DestroyMagickWand(@wand)
-      LibMagickWand.MagickWandTerminus
       destroy = true
     end
 
