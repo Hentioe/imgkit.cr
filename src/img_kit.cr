@@ -9,6 +9,8 @@ module ImgKit
     LibMagickWand.MagickWandTerminus
   end
 
+  MAGICK_TRUE = LibMagickWand::MagickBooleanType::MagickTrue
+
   class Image
     property path : String
 
@@ -21,7 +23,13 @@ module ImgKit
     def initialize(@path)
       LibMagickWand.MagickWandGenesis
       @wand = LibMagickWand.NewMagickWand
-      LibMagickWand.MagickReadImage(@wand, @path)
+
+      status = LibMagickWand.MagickReadImage(@wand, @path)
+
+      if status != MAGICK_TRUE
+        raise ImgException.new("Error reading #{@path}")
+      end
+
       @width = LibMagickWand.MagickGetImageWidth(@wand)
       @height = LibMagickWand.MagickGetImageHeight(@wand)
     end
@@ -34,19 +42,36 @@ module ImgKit
       elsif height == 0
         height = (width / ratio).to_i
       end
-      LibMagickWand.MagickResizeImage(@wand, width, height, filter)
+
+      status = LibMagickWand.MagickResizeImage(@wand, width, height, filter)
+
+      if status != MAGICK_TRUE
+        raise ResizeException.new("Error resize image to #{width}x#{height}")
+      end
     end
 
     def blur(sigma, radius = 0.0)
-      LibMagickWand.MagickGaussianBlurImage(@wand, radius, sigma)
+      status = LibMagickWand.MagickGaussianBlurImage(@wand, radius, sigma)
+
+      if status != MAGICK_TRUE
+        raise BlurException.new("Error blur image to #{radius},#{sigma}")
+      end
     end
 
     def crop(width = 0, height = 0, x = 0, y = 0)
-      LibMagickWand.MagickCropImage(@wand, width, height, x, y)
+      status = LibMagickWand.MagickCropImage(@wand, width, height, x, y)
+
+      if status != MAGICK_TRUE
+        raise CropException.new("Error crop image to #{width},#{height},#{x},#{y}")
+      end
     end
 
     def save(path)
-      LibMagickWand.MagickWriteImages(@wand, path, LibMagickWand::MagickBooleanType::MagickTrue)
+      status = LibMagickWand.MagickWriteImages(@wand, path, LibMagickWand::MagickBooleanType::MagickTrue)
+
+      if status != MAGICK_TRUE
+        raise ImgException.new("Error write image to #{path}")
+      end
     end
 
     def finish
