@@ -9,5 +9,7 @@ module ImgKit
     fun MagickWandTerminus
     fun MagickGetImageWidth(MagickWand*) : LibC::SizeT
     fun MagickGetImageHeight(MagickWand*) : LibC::SizeT
+    fun MagickGetException(MagickWand*, severity : ExceptionType*) : LibC::Char*
+    fun MagickRelinquishMemory(Void*) : Void*
   end
 end

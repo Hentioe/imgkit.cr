@@ -26,8 +26,8 @@ module ImgKit
 
       status = LibMagickWand.MagickReadImage(@wand, @path)
 
-      if status != MAGICK_TRUE
-        raise ImgException.new("Error reading #{@path}")
+      wrapper_exception status do |_type, description|
+        ImgException.new(description)
       end
 
       @width = LibMagickWand.MagickGetImageWidth(@wand)
@@ -45,32 +45,32 @@ module ImgKit
 
       status = LibMagickWand.MagickResizeImage(@wand, width, height, filter)
 
-      if status != MAGICK_TRUE
-        raise ResizeException.new("Error resize image to #{width}x#{height}")
+      wrapper_exception status do |_type, description|
+        ResizeException.new(description)
       end
     end
 
     def blur(sigma, radius = 0.0)
       status = LibMagickWand.MagickGaussianBlurImage(@wand, radius, sigma)
 
-      if status != MAGICK_TRUE
-        raise BlurException.new("Error blur image to #{radius},#{sigma}")
+      wrapper_exception status do |_type, description|
+        BlurException.new(description)
       end
     end
 
     def crop(width = 0, height = 0, x = 0, y = 0)
       status = LibMagickWand.MagickCropImage(@wand, width, height, x, y)
 
-      if status != MAGICK_TRUE
-        raise CropException.new("Error crop image to #{width},#{height},#{x},#{y}")
+      wrapper_exception status do |_type, description|
+        CropException.new(description)
       end
     end
 
     def save(path)
       status = LibMagickWand.MagickWriteImages(@wand, path, LibMagickWand::MagickBooleanType::MagickTrue)
 
-      if status != MAGICK_TRUE
-        raise ImgException.new("Error write image to #{path}")
+      wrapper_exception status do |_type, description|
+        ImgException.new(description)
       end
     end
 
@@ -81,6 +81,15 @@ module ImgKit
 
     def destroy?
       destroy
+    end
+
+    def wrapper_exception(status)
+      if status != MAGICK_TRUE
+        description = LibMagickWand.MagickGetException(@wand, out severity)
+        ex = yield severity.value, String.new(description)
+        LibMagickWand.MagickRelinquishMemory(description)
+        raise ex
+      end
     end
   end
 end
