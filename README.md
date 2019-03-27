@@ -1,6 +1,6 @@
 # ImgKit
 
-Image Kit for Crystal (based on MagicWand binding)
+Image Toolkit for Crystal (based on MagicWand binding)
 
 ## Installation
 

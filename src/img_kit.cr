@@ -88,6 +88,7 @@ module ImgKit
         description = LibMagickWand.MagickGetException(@wand, out severity)
         ex = yield severity.value, String.new(description)
         LibMagickWand.MagickRelinquishMemory(description)
+        finish
         raise ex
       end
     end
