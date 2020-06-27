@@ -1,5 +1,8 @@
 require "../src/img_kit"
 
+# Create output diretcory
+Dir.mkdir_p("output")
+
 # Resize
 img = ImgKit::Image.new("demo.png")
 img.resize(width: 301)

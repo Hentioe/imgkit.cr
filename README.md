@@ -2,6 +2,12 @@
 
 Image Toolkit for Crystal (based on MagicWand binding)
 
+## Requirements
+
+- `libmagickwand-dev`
+  - Ubuntu: `apt install libmagickwand-dev`
+  - Mac: `brew install imagemagick`
+
 ## Installation
 
 1. Add the dependency to your `shard.yml`:
@@ -16,7 +22,7 @@ Image Toolkit for Crystal (based on MagicWand binding)
 
 ## Usage
 
-```` crystal
+```crystal
 require "img_kit"
 
 # Resize
@@ -44,7 +50,7 @@ img.blur(5.0)
 img.crop(width: 200)
 img.save("output/combin.png")
 img.finish
-````
+```
 
 ## Contributing
 
